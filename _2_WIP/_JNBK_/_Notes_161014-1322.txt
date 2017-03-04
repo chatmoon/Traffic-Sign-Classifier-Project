@@ -1,0 +1,584 @@
+#-----------------
+# 000: INITIALIZE
+#-----------------
+* scenario:
+  > create a new folder: gitdemo
+  > select it & contextual menu: Git Bash
+  > initialize change control tracking: <git init>
+    - note:
+	    invisible new folder, .git, has been created in folder gitdemo
+	    all changes will be stored in it
+	    zip folder gitdemo & send it by email (sharing)
+    - note:
+    	the change history only is recorded but there is no backup of files unlike SVN
+
+#-----------------
+# 001: CHANGE 1
+#-----------------
+  > create file, readme.txt, with 'CHANGE 1' in it
+  > check the status: <git status>
+    - msg:
+    	untracked files: readme.txt'													<---- .TXT not staged
+  > <git add txt> = stage 1file+1line / make it trackable								<---- 'change 1' staged
+  > <git status>:
+    - msg:
+    	'changes to be committed: new file: readme.txt'
+    - note:
+    	changes on readme.txt should be tracked now
+
+
+#-----------------
+# 002: CHANGE 2
+#-----------------
+* scenario:
+  > modify txt by adding 'CHANGE 2'
+  > stage 1file+2lines: <git add txt>
+  > <git status>:
+    - msg:
+	    changes to be committed: 'new file: readme.txt'									<---- 'change 1' staged
+	    changes not staged for commit: 'modified: readme.txt'							<---- 'change 2' not staged
+    - note:
+    	the file is tracked but the new changes were not staged yet
+    	if we commit right now, only 'CHANGE001' will be committed, not 'CHANGE 2'.
+
+
+  > stage 1file+2lines: <git add txt>													<---- 'change 2' staged
+    - note:
+    	this 2nd staging make taking accounting of 'CHANGE002'
+    	because after the 1st staging no committing has been done.
+
+
+  > <git commit>
+    - note:
+    	vi editor is displayed
+  > <vi> activate the insert mode (click I)
+  > <vi> add comment about changes ('Initial commit')
+  > <vi> save and leave vi (:qW)
+    - msg:
+	    [master (root-commit) 148412a] Initial commit
+		1 file changed, 40 insertions(+)
+	 	create mode 100644 readme.txt
+  > <git status>:
+    - msg:
+    	On branch master, nothing to commit, working tree clean							<---- 'change 1' & '2' committed
+
+
+#-----------------
+# 003: CHANGE 3
+#-----------------
+* scenario:
+  > modify txt by adding 'CHANGE 3'													<---- 'change 3' not staged
+  > stage this change: <git add txt>													<---- 'change 3' staged
+  > commit this change without vi editor: <git commit -m 'change 3'>					<---- 'change 3' committed
+    - msg:
+	    [master 07f2c32] change 3
+	 	1 file changed, 11 insertions(+)
+
+
+#-----------------
+# 004: COMMIT HISTORY
+#-----------------
+* scenario:
+  > <git log>:
+    - msg:
+		commit 07f2c324e03224b84097536bd96ce3487068aa1f
+		Author: Mo <msprj2010@gmail.com>
+		Date:   Thu Oct 13 15:47:24 2016 +0200
+
+		    change 3
+
+		commit 148412abf2c696e217ef16981412c528b906aa21
+		Author: Mo <msprj2010@gmail.com>
+		Date:   Thu Oct 13 14:07:56 2016 +0200
+
+		    Initial commit
+
+
+#-----------------
+# 005: CHANGE 4
+#-----------------
+* scenario:
+  > add index.html in gitdemo folder													<---- .HTML not staged
+  > modify txt by adding 'CHANGE 4'													<---- 'change 4' not staged
+  > <git status>:
+    - msg:
+		On branch master
+		Changes not staged for commit:
+		        modified:   readme.txt													<---- 'change 4' not staged
+
+		Untracked files:
+		        index.html																<---- .HTML not staged
+
+		no changes added to commit (use "git add" and/or "git commit -a")
+
+
+  > stage all (two) changes by <git add .>												<---- .HTML & 'change 4' staged
+  > stage all html files, for example, by changes by <git add *.html>
+  > <git status>:
+    - msg:
+    	On branch master
+		Changes to be committed:
+		  (use "git reset HEAD <file>..." to unstage)
+
+		        new file:   index.HTML													<---- .HTML staged
+		        modified:   readme.txt													<---- 'change 4' staged
+
+
+  > add test.log in gitdemo folder														<---- .LOG not staged
+  > <git status>:
+    - msg:
+    	On branch master
+		Changes to be committed:
+
+		        new file:   index.HTML													<---- .HTML staged
+		        modified:   readme.txt													<---- 'change 4' staged
+
+		Untracked files:
+
+		        test.log																<---- .LOG not staged
+
+
+  > create '.gitignore' file in gitdemo folder: <touch .gitignore>
+  > edit '.gitignore' and write *.log
+  > <git status>:
+    - msg:
+    		On branch master
+    		Changes to be committed:
+    		  (use "git reset HEAD <file>..." to unstage)
+
+    		        new file:   index.html
+    		        modified:   readme.txt
+
+    		Untracked files:
+    		  (use "git add <file>..." to include in what will be committed)
+
+    		        .gitignore
+    - note:
+    	the log file doesn't show up anymore thx to the '.gitignore' file
+  > stage all changes: <git add .>	
+  > commit changes: <git commit -m 'adding .gitignore file'>					<---- 'change 3' committed
+    - msg:
+	    [master 745dde6] adding .gitignore file
+		 3 files changed, 166 insertions(+), 51 deletions(-)
+		 create mode 100644 .gitignore
+		 create mode 100644 index.html
+		 rewrite readme.txt (65%)
+
+
+#-----------------
+# 006: BRANCHING, MERGING, CHANGE 5
+#-----------------
+* Description:
+  > Branching and merging allow you to work on a copy of the code
+  > without affecting the main line directory.
+  > Example: you create a branch when:
+    - you fixe a bug
+    - develop a new feature
+  > Working on your own branch allows everyone else
+  > to continue their works without being affected by
+  > what you're doing
+  > And you still benefit of the source control.
+  > Because when you are done, you will merge your changes
+  > back to the main line. 
+
+
+* scenario:
+  > create a new branch: <git branch MyBranch>
+  > switsch to the new branch: <git checkout MyBranch>
+    - msg:
+    		M       readme.txt
+    		Switched to branch 'MyBranch01'
+
+  > create a CSS file: <touch index.css>
+  > modify txt by adding 'CHANGE 5'
+  > stage all: <git add .>
+  > commit changes: <git commit -m 'first update in MyBranch01'>
+
+  > switch back to the main branch: <git checkout master>
+    - note:
+        CSS file is not anymore in the gitdemo folder
+        'CHANGE 5' is not anymore in the TXT file
+  > merge from MyBranch01 to the main branch: <git merge MyBranch01>
+    - note:
+        Make sure you are in the main branch before merging it with MyBranch01
+    - msg:
+        Updating 745dde6..7a35b3d
+        Fast-forward
+         index.css  |  0
+         readme.txt | 52 ++++++++++++++++++++++++++++++++++++++++++++--------
+         2 files changed, 44 insertions(+), 8 deletions(-)
+         create mode 100644 index.css
+
+
+* scenario:
+  > create a new branch: <git branch -b MyNewBranch>
+    - note:
+        it is equal to:
+          <git branch MyNewBranch>
+        + <git checkout MyNewBranch>
+
+#-----------------
+# 007: CONFLICTING MERGING, CHANGE 006 & 007
+#-----------------
+* scenario:
+  > be in the main line (master)
+  > modify txt by adding 'CHANGE 6'
+  > stage and commit in once: <git commit -a -m 'Conflict study - CHANGE 6 in the main line'>
+    - note:
+        only tracked files will be staged and committed in once with this cmd '-a'
+        but all new files wil NOT. They need to be staged (<git add newFile>)
+        once before '-a' affect them.
+    - msg:
+        [master 9fb649b] Conflict study - CHANGE 6 in the main line
+        1 file changed, 2 insertions(+), 1 deletion(-)
+
+
+  > switch to MyBranch01: <git checkout MyBranch01>
+    - note:
+        At this stage of the scenario, TXT file should have up to 'change 5'.
+        The 'change 6' has been added in the main line, master branch only.
+  > modify txt by adding 'CHANGE 7'
+  > merge master in MyBranch01: <git merge master>
+    - note:
+        Make sure you are in the MyBranch01 branch before merging it with master
+    - msg:
+        Auto-merging readme.txt
+        CONFLICT (content): Merge conflict in readme.txt
+        Automatic merge failed; fix conflicts and then commit the result.
+    - note:
+        TXT file has been modified by the GIT pointing the conflict by adding:
+            <<<<<<< HEAD
+            change 7
+            =======
+            change 6
+            >>>>>>> master
+
+
+  > modify txt by resolving the conflict
+  > stage and commit TXT file in once: <git commit -a -m 'Con... in TXT in MyBranch01'>
+    - msg:
+        [MyBranch01 1f561a8] Conflict study - resolving the conflict in TXT in MyBranch01
+  > <git status>:
+    - msg:
+        On branch MyBranch01
+        nothing to commit, working tree clean
+
+
+  > run a merge tool to mgt more easily merging conflict: <git mergetool>
+    - msg:
+        This message is displayed because 'merge.tool' is not configured.
+        See 'git mergetool --tool-help' or 'git help config' for more details.
+        'git mergetool' will now attempt to use one of the following tools:
+        opendiff kdiff3 tkdiff xxdiff meld tortoisemerge gvimdiff diffuse diffmerge ecmerge p4merge araxis bc codecompare emerge vimdiff
+        No files need merging
+    - note:
+        Meld has been installed as a merge tool but not yet configured to be used with Git
+
+#-----------------
+# 008: STASH
+#-----------------
+* Description:
+  > <git stash> is useful when you make several changes and you want to switch in another branch
+    but you are not yet ready to commit these changes. If you don't use <git stash>, when you switch to another branch without committing, all these changes will follow you in the targetted branch (new and modified files). The <git stash> help to save these changes in a temporary state. All these changes will be hidden until you decide to call them back by <git stash apply>.
+
+
+
+* scenario:
+  > create new TXT: <touch newfile.txt>
+    - note:
+        At this stage, we are in the MyBranch01 branch
+
+
+  > switch to the main line: <git checkout master>
+    - note:
+        We haven't yet committed the creation of the TXT file when we were in the MyBranch01.
+        Then newfile.txt should be still there in the folder when we switch in the main line. 
+  > <git status>:
+    - msg:
+        On branch master
+        Untracked files:
+                newfile.txt
+        nothing added to commit but untracked files present (use "git add" to track)
+
+
+  > switch back to MyBranch01: <git checkout MyBranch01>
+  > stage newfile.txt: <git add .>
+  > <git status>:
+    - msg:
+        On branch MyBranch01
+        Changes to be committed:
+          (use "git reset HEAD <file>..." to unstage)
+
+                new file:   newfile.txt
+
+
+  > save working directory and index state WIP on MyBranch line: <git stash>
+    - msg:
+        Saved working directory and index state WIP on MyBranch01: 1f561a8 Conflict study - re             solving the conflict in TXT in MyBranch01
+        HEAD is now at 1f561a8 Conflict study - resolving the conflict in TXT in MyBranch01
+    - note:
+        The newfile.txt is not anymore in the gitdemo folder (temporarily)
+  > <git status>:
+    - msg:
+        On branch MyBranch01
+        nothing to commit, working tree clean
+
+
+  > come back in the state before (with the newfile.txt back): <git stash apply>
+    - msg:
+        On branch MyBranch01
+        Changes to be committed:
+          (use "git reset HEAD <file>..." to unstage)
+
+                new file:   newfile.txt
+    - note:
+        The newfile.txt is back again in the gitdemo folder, in the MyBranch01 line
+
+#-----------------
+# 009: REMOTE DIRECTORY
+#-----------------
+* Description:
+  > Even though you are working with 'remote repository', everything is still happening in the locally.
+    You have to still retrieve and push all changes to the remote reprository manually
+
+* git config --global user.email "chatmoon@gmail.com"
+* git config --global user.name "mo"
+* git config --list
+   :> user.email=mo2amedus@gmail.com
+   :> user.name=mo    
+
+* git config --global --unset-all user.name
+* git config --global --unset-all user.mail
+* git config --global --unset-all user.email    
+
+* scenario:
+  > list all remote repository available: <git remote>
+    - note:
+        None should be listed yet
+
+
+  > get url of a remote repository:
+    - open github.com/msprj2010/20Min as msprj2010
+    - click 'clone or download' > 'clone with HTTPS'
+    - copy URL 'https://github.com/msprj2010/20Min.git'
+  > clone the remote repository: <git clone https://github.com/msprj2010/20Min>
+    - msg:
+        Cloning into '20Min'...
+        remote: Counting objects: 6, done.
+        remote: Compressing objects: 100% (3/3), done.
+        remote: Total 6 (delta 0), reused 0 (delta 0), pack-reused 0
+        Unpacking objects: 100% (6/6), done.
+    - note:
+        a new folder is downloaded in gitdemo folder: '20Min', as the gitHub folder of the project
+
+
+  > go to this new folder: <cd 20Min>
+  > list all remote repository available: <git remote>
+    - msg:
+        origin
+    - note:
+        None should be listed yet
+  > get their url: <git remote -v>
+    - msg:
+        origin  https://github.com/msprj2010/20Min (fetch)
+        origin  https://github.com/msprj2010/20Min (push)
+
+
+  > go to the server and get all changes made since the last clone or fetch: <git fetch origin>
+    - note: <git fetch origin> will put all the data in your directory but they will not be merged. The merge has to be done manually.
+  > fetch and merge from your remote branch into your current (local) branch: <git pull origin>
+
+
+  > modify the content of README.md file in '20Min' folder
+  > commit your changes: <git commit -a -m 'readme changes'>
+    - msg:
+        [master 9a1ae56] readme changes
+        1 file changed, 1 insertion(+)
+  > update the remote repository and the master line: <git push origin master>
+    - msg:
+        Counting objects: 3, done.
+        Compressing objects: 100% (3/3), done.
+        Writing objects: 100% (3/3), 371 bytes | 0 bytes/s, done.
+        Total 3 (delta 0), reused 0 (delta 0)
+        To https://github.com/msprj2010/20Min
+           1464edc..9a1ae56  master -> master
+  > open in Chrome the GitHub remote repo and check the modifications have been pushed in
+
+
+  > create a new remote repo: <git remote add MyRepo01 https://github.com/msprj2010/20Min/MyRepo01>
+  > check the new remote repo has been created in GitHub
+
+
+#-----------------------------------------------------------
+# A00: UDACITY - HOW TO USE VERSION CONTROL IN GIT & GITHUB
+#-----------------------------------------------------------
+
+
+#-----------------
+# A01: COMPARE TWO COMMIT CONTENTS WITH GIT
+#-----------------
+
+* Description:
+  > To compare the content of two commit and spot the changes, you can use the cmd <git diff num_commit1 num_commit2 
+
+* scenario:
+  > list all committed changes: <git log>
+  > compare the content of two commits: <git diff 4c0e...e 2a3d...b>
+    - msg:
+        diff --git a/_03_Problem Set 5/ps6.py b/_03_Problem Set 5/ps6.py
+        index 51acc8f..2bf03b8 100644
+        --- a/_03_Problem Set 5/ps6.py
+        +++ b/_03_Problem Set 5/ps6.py
+        @@ -102,21 +102,28 @@ class Message(object):
+                 Returns: a dictionary mapping a letter (string) to
+        -        #   . Create dico such as keys = lowercase + uppercase
+        -        dico0 = {}
+        +        dict0 = {}
+                 list0 = list(string.ascii_lowercase + string.ascii_uppercase)
+        -        chr(97) == 'a'
+
+#-----------------
+# A02: COMPARE TWO COMMIT CONTENTS WITH SUBLIME
+#-----------------
+* scenario:
+  > run 'Sublime text' software
+  > Ctrg+Shift+P
+    - note: cf. doc. May be 'Tools > Instal Package' to be done 1st
+  > select 'Install Package' (?)
+
+  > open two txt files
+  > select one > 3MB > Compare with
+
+#-----------------
+# A03: FEW CMDs
+#-----------------
+* Getting version of Git:
+  > run <git --version>
+* Getting help on Git commands
+  > <git help cmd> , ex: <git help diff>
+* To highlight the differences (color)
+  > run <git config --global color.ui auto>
+
+#-----------------
+# A04: CLONING AND EXPLORING THE REPO
+#-----------------
+* scenario:
+  > run <git clone https://github.com/udacity/asteroids.git>
+    - msg:
+        Cloning into 'asteroids'...
+        remote: Counting objects: 209, done.
+        remote: Total 209 (delta 0), reused 0 (delta 0), pack-reused 209
+        Receiving objects: 100% (209/209), 199.25 KiB | 84.00 KiB/s, done.
+        Resolving deltas: 100% (126/126), done.
+    - note:
+        a new folder has been downloaded in your directrory from the internet
+
+#-----------------
+# A05: 
+#-----------------        
+<git log -n 1> : affiche que le dernier changement au lieu d'afficher tout l'historique
+<git diff id1 id2>
+<git diff --stat xxx>
+<git log --graph --oneline master coins>
+...
+<git remote add origin https://github.com/msprj2010/Trash_reflections.git>
+<git remote -v>
+    - msg:
+        origin  https://github.com/msprj2010/Trash_reflections.git (fetch)
+        origin  https://github.com/msprj2010/Trash_reflections.git (push)
+<git push origin master>
+    - msg:
+        Counting objects: 19, done.
+        Compressing objects: 100% (18/18), done.
+        Writing objects: 100% (19/19), 25.16 KiB | 0 bytes/s, done.
+        Total 19 (delta 2), reused 0 (delta 0)
+        remote: Resolving deltas: 100% (2/2), done.
+        To https://github.com/msprj2010/Trash_reflections.git
+         * [new branch]      master -> master
+
+
+* scenario:
+  > <gitHub:Fork>
+  > <git clone https://github.com/msprj2010/recipes.git>
+  > <cd recipes>
+  > <git remote -v>
+    - msg:
+        origin  https://github.com/msprj2010/recipes.git (fetch)
+        origin  https://github.com/msprj2010/recipes.git (push)
+  > <touch blanquettDeVeau-recipe.txt>
+  > <git add .>
+  > <git commit -m 'Add a blanquette de veau recipe'>
+  > <git push origin master>
+    - msg:
+        Counting objects: 3, done.
+        Compressing objects: 100% (3/3), done.
+        Writing objects: 100% (3/3), 864 bytes | 0 bytes/s, done.
+        Total 3 (delta 1), reused 0 (delta 0)
+        remote: Resolving deltas: 100% (1/1), completed with 1 local objects.
+        To https://github.com/msprj2010/recipes.git
+           a6a2f99..d340494  master -> master
+  > <gitHub:Refresh>, check a new txt file has been added in the gitHub repository
+
+
+<git/gitHub><git diff origin/master master>
+    - note:
+        <git diff origin/master master> to idenfity all conflicting changes
+        then git pull = git fetch + git merge
+
+
+* scenario:
+  > <git fetch origin>
+  > <git log origin/master>
+  > <git diff origin/master master>
+  > <git status>
+    - msg:
+        on branch master
+        Your branch and 'origin/master' have diverged,
+        and have 1 and 1 different commit each, respectively.
+          (use "git pull" to merge the remote branch into yours)
+        nothing to commit, working directory clean
+  > <git merge master origin/master>
+    - msg:
+        Auto-merging chili-recipe.txt
+        CONFLICT (content): Merge conlfict in chili-recipe.txt
+        Automatic merge failed; fix conflicts and then commit the result.
+  > modify chili-recipe.txt and resolve the conflicts and save
+  > stage chili-recipe.txt: <git add chili-recipe.txt>
+  > <git commit>
+  > <git push origin master>
+
+* scenario:
+  > <git branch different-oil>
+  > <git checkout different-oil>
+    - msg:
+        Switched to branch 'different-oil'
+  > modify chili-recipe.txt
+  > <git status>
+    - msg:
+        On branch different-oil
+        Changes not staged for commit:
+          (use "git add <file>..." to update what will be committed)
+          (use "git checkout -- <file>..." to discard changes in working directory)
+
+                modified:   chili-recipe.txt 
+
+        no changes added to commit (use "git add" and/or "git commit -a")
+  > <git add chili-recipe.txt>
+  > <git commit>
+    - msg:
+        [different-oil f0611c0] Use canola oil instead of vegetable oil
+         1 file changed, 1 insertion(+), 1 deletion(-)
+  > < git push origin different-oil>
+    - msg:
+        Counting objects: 3, done.
+        Compressing objects: 100% (3/3), done.
+        Writing objects: 100% (3/3), 311 bytes | 0 bytes/s, done.
+        Total 3 (delta 2), reused 0 (delta 0)
+        remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+        To https://github.com/msprj2010/recipes.git
+         * [new branch]      different-oil -> different-oil
+
+  > <
+  > <
+  > <
+#-----------------------------------------------------------
