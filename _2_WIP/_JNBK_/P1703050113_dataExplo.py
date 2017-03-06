@@ -69,9 +69,12 @@ class dataExplo(object):
     
 
     def showList(self,figNb=3):
-        dct = { 0: '--------------------------------------------------  ---------------------------------------------------------',
-                1: '%-44s|%-8s%-50s|%-5s',
-                2: '%-45s%-8s%-50s|%-5s',
+        # ------------- <-- it has been removed bc of jnbk in Github: the rendering is not as it is expected
+        # ------        <-- done
+        # -------       <-- done
+        dct = { 0: '--------------------------------------------  --------------------------------------------------',
+                1: '%-44s|%-8s%-50s|%-5s', # <--- to be modified
+                2: '%-45s%-8s%-50s|%-5s',  # <--- to be modified
                 3: 'Traffic sign name',
                 4: 'Occu.',
                 }

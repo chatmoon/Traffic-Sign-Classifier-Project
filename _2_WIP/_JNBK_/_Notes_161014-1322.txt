@@ -347,11 +347,30 @@
    :> user.email=mo2amedus@gmail.com
    :> user.name=mo    
 
+# reset 
 * git config --global --unset-all user.name
 * git config --global --unset-all user.mail
 * git config --global --unset-all user.email    
 
-* scenario:
+# scenario 2
+  > list all remote repository available: <git remote>
+    - note:
+        None should be listed yet
+
+
+  > get url of a remote repository:
+    - open github.com/msprj2010/20Min as msprj2010
+    - click 'clone or download' > 'clone with HTTPS'
+    - copy URL 'https://github.com/chatmoon/Traffic-Sign-Classifier-Project.git'
+
+  > git remote add origin https://github.com/chatmoon/Traffic-Sign-Classifier-Project.git
+    # Sets the new remote
+  > git remote -v
+    # Verifies the new remote URL
+  > git pull origin master --allow-unrelated-histories
+
+
+* scenario 1:
   > list all remote repository available: <git remote>
     - note:
         None should be listed yet
@@ -480,6 +499,10 @@
 <git diff id1 id2>
 <git diff --stat xxx>
 <git log --graph --oneline master coins>
+
+<git shortlog>
+    - note: liste au minimum, tres agreable a lire 
+
 ...
 <git remote add origin https://github.com/msprj2010/Trash_reflections.git>
 <git remote -v>
@@ -582,3 +605,13 @@
   > <
   > <
 #-----------------------------------------------------------
+
+git rm -r --cached folder/
+git commit -m 'removed old folder'
+git push origin master   # or whatever branch you are using
+
+
+
+git fetch
+git rebase feature/my_feature_branch
+git push origin feature/my_feature_branch
