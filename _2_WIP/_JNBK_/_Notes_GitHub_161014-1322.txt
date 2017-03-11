@@ -1,4 +1,4 @@
-#-----------------
+﻿#-----------------
 # 000: INITIALIZE
 #-----------------
 * scenario:
@@ -181,10 +181,13 @@
   > Because when you are done, you will merge your changes
   > back to the main line. 
 
+* how to show the branch name and the short status:
+	< git branch -v | grep \* >
+
 
 * scenario:
   > create a new branch: <git branch MyBranch>
-  > switsch to the new branch: <git checkout MyBranch>
+  > switch to the new branch: <git checkout MyBranch>
     - msg:
     		M       readme.txt
     		Switched to branch 'MyBranch01'

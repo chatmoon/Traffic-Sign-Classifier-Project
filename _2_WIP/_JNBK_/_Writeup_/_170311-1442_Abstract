@@ -1,0 +1,90 @@
+Abstract — We apply Deep Learning and Convolutional Networks (ConvNets) to the task of traffic sign classification as part of the SELF-DRIVING CAR nanodegree program. The project is broken down into three steps, which are:
+- Step 1: Data Set Summary & Exploration
+- Step 2: Design and Test a Model Architecture
+- Step 3: Test a Model on New Images
+The model yielded the accuracy of 9x.xx% with a loss of xx.xx, above the human performance of 98.81%, using 32x32 pre-proceeded input images.
+
+Beyond the initial requirements, I also implemented the Tensorboard features: embedding visualizer, summary{images, loss, accuracy, weights, biais}, a comparaison of different architectures, and compared the model result with Google Images search.
+
+Here is the link to the [PROJECT SPECIFICATION](https://review.udacity.com/#!/rubrics/481/view) and here to my [PROJECT CODE](https://github.com/chatmoon/Traffic-Sign-Classifier-Project/blob/master/_2_WIP/_JNBK_/_TSC-step2.1_170309-1557_WIP.ipynb).
+
+
+The project requires the following dependancies:
+- Python 3.5 & libraries{ numpy, pillow, prettyimage, SciPy, scikit-learn }
+- Tensorflow 1.0.0
+- OS: ubuntu 14.04
+
+footnote: 
+- Tensorflow is an open source software library for machine learning developed by Google
+- Deep learning is a branch of machine learning based on a set of algorithms that attempt to model high level abstractions in data
+- ConvNets are biologically-inspired multi-stage architectures that automatically learn hierarchies of invariant features
+
+# ----------------------------------------------------------------
+
+ConvNets are biologically-inspired multi-stage architectures that automatically learn hierarchies of invar
+iant features. While many popular vision approaches use handcrafted features such as HOG or SIFT, ConvNets learn feature
+s at every level from data that are tuned to the task at hand. The traditional ConvNet architecture was modified by feeding 1st stage features in addition to 2nd stage features to the classifier. The system yielded the 2nd-best accuracy of 98.97% during phase I of the competition (the best entry obtained 98.98%), above the human performance of 98.81%, using 32x32 color input images. Experiments conducted after phase 1 produced a new record of 99.17% by increasing the network capacity, and by using greyscale images instead of color. Interestingly, random features still yielded competitive results (97.33%)
+
+
+# ----------------------------------------------------------------
+
+Abstract — 
+
+#
+This is my 2nd project in the Udacity’s Self Driving Cars Nano Degree. In this project, deep neural networks and convolutional neural networks are used to classify traffic signs. The model is trained to classify traffic signs from the German Traffic Sign Dataset. The training data set consists of 43 classes of traffic signs. Sample images of each class and its corresponding frequency in the training data set is shown below.
+
+#
+In this project, you will use what you've learned about deep neural networks and convolutional neural networks to classify traffic signs. You will train a model so it can decode traffic signs from natural images by using the German Traffic Sign Dataset. After the model is trained, you will then test your model program on new images of traffic signs you find on the web, or, if you're feeling adventurous pictures of traffic signs you find locally!
+
+#
+In this post, we will go over the work I did for project 2 of Udacity’s self-driving car project, classifying German traffic signs using deep learning. It is very important for a self-driving car to read traffic signs and interpret them to understand the traffic rules. Deep learning neural networks or convolutional neural networks have emerged as powerful image classifiers in the past decade. Primarily due to advances in GPU technology for fast computing. In this project we will go over the solution for classifying German sign data that gave accuracy of 98.8 on the test data. As a reference, below are the predictions from other papers and human accuracy,
+
+#
+The rest of the post is organized as follows,
+Exploratory data analysis
+Data augmentation and preprocessing
+Model architecture
+Training
+Model performance on German sign test data and model performance on unseen data
+Conclusions
+
+#
+Traffic Sign Classification using ConvNets
+After simple lane detection using OpenCV, the Udacity.com Self-Driving Car Nanodegree introduced  Convolutional Neural Networks, and Deep Learning.
+
+The task of the second assignment was to build a classifier for the German Traffic Sign Classification IEEE challenge using TensorFLow.
+
+The below network was able to achieve an accuracy of 96.382% on the test set.; the benchmark for this challenge is 99.81%.
+
+#
+Classify traffic signs using a simple convolutional neural network.
+
+
+# ----------------------------------------------------------------
+#Dependencies
+
+This project requires Python 3.5 and the following Python libraries installed:
+
+Jupyter
+NumPy
+SciPy
+scikit-learn
+TensorFlow
+
+#Setup
+
+OS X and Linux
+
+Install Anaconda
+This project requires Anaconda and Python 3.4 or higher. If you don't meet all of these requirements, install the appropriate package(s).
+
+#Run the Anaconda Environment
+
+Run these commands in your terminal to install all requirements:
+
+$ git clone https://github.com/matthewzimmer/traffic-sign-classification.git
+$ conda env create -f environment.yml
+
+Install Tensorflow
+
+GPU
