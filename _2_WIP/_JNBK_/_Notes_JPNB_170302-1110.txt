@@ -1,10 +1,10 @@
-#001: JUPYTER NOTEBOOK
+﻿#001: JUPYTER NOTEBOOK
 cd /home/mo/_eSDC_/_L11_
 source activate CarND-Traffic-Sign-Classifier-Project
 jupyter notebook
 
 #002: TENSORBOARD
-cd /home/mo/_eSDC_/_L11_/_2_WIP/CarND-Traffic-Sign-Classifier-Project
+cd /home/mo/_eSDC_/_L11_/_V2_/_1_WORK/_2_WIP/
 source activate CarND-Traffic-Sign-Classifier-Project
 tensorboard --logdir=./logs/nn_logs
 tensorboard --inspect --logdir=./logs/nn_logs
@@ -14,9 +14,18 @@ tensorboard --logdir=./logs/nn_logs/170301x1919 --debug
 #003: GITHUB
 cd /home/mo/_eSDC_/_L11_/_V2_/_1_WORK/_2_WIP/_JNBK_
 git status
-
+git log -n 1
+git diff id1 id2
+git diff --stat xxx
+git log --graph --oneline master coins
+git shortlog
 
 
 #004: BIBLIOGRAPHY
 https://github.com/llSourcell/How_to_make_a_tensorflow_image_classifier_LIVE/blob/master/demonotes.ipynb
 https://github.com/tensorflow/tensorflow/issues
+
+ALEX:
+https://github.com/navoshta/
+http://navoshta.com/traffic-signs-classification/
+
